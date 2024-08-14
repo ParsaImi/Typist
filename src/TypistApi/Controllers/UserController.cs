@@ -26,7 +26,6 @@ public class UserController : ControllerBase
         _mapper = mapper;
         _publishEndpoint = publishEndpoint;
     }
-    [Authorize]
     [HttpGet]
 
     // public async Task<ActionResult<List<UserDto>>> GetAllUsers()
@@ -54,7 +53,6 @@ public class UserController : ControllerBase
 
         //     return _mapper.Map<List<UserAllDto>>(users);
     }
-    [Authorize]
     [HttpGet("{id}")]
 
     public async Task<ActionResult<UserDto>> GetUserById(Guid id)
@@ -65,7 +63,7 @@ public class UserController : ControllerBase
 
         return _mapper.Map<UserDto>(user);
     }
-    [Authorize]
+    
     [HttpPost]
 
     public async Task<ActionResult<UserDto>> PostUser(UserAllDto userAllDto)
