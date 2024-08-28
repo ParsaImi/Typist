@@ -13,7 +13,7 @@ COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityServ
 
 
 # restoring package deps
-RUN dotnet restore Typist.sln
+# RUN dotnet restore Typist.sln
 
 # copy the app folders
 COPY src/TypistApi src/TypistApi
