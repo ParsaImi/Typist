@@ -1,8 +1,7 @@
 'use server'
-import { User, getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]'; // Ensure you have the correct path
+import { User } from 'next-auth';
 import React from 'react';
-import { getSession } from "@/app/actions/authAction"
+import { getCurrentUser } from "@/app/actions/authAction"
 import Home from "./page"
 
 
@@ -11,8 +10,8 @@ type Props = {
 }
 
 export default async function GetUserSession() {
-  const session = await getSession()
-  const name = session?.user?.name || "guest"
+  const session = await getCurrentUser()
+  const name = session?.name || "guest"
   return name;
 }
 

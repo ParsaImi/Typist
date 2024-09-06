@@ -1,8 +1,6 @@
 
 import { Card } from "flowbite-react";
 import { useEffect, useRef, useState } from 'react';
-
-import { getServerSession } from 'next-auth';
 import React from 'react';
 console.log("test from websockettt!")
 export const useWebSocket = (url: string) => {

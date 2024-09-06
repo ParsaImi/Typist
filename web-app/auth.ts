@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 
 import DuendeIdentityServer6 from "next-auth/providers/duende-identity-server6";
 
-export const { handlers , signIn, singOut , auth } = NextAuth({
+export const { handlers , signIn, signOut , auth } = NextAuth({
     session: {
         strategy: 'jwt'
     },
@@ -11,18 +11,18 @@ export const { handlers , signIn, singOut , auth } = NextAuth({
             id: 'id-server',
             clientId: 'nextApp',
             clientSecret: 'secret',
-            issuer: 'http:localhost:5001',
+            issuer: 'identity-svc',
             authorization: {
                 params: { scope: 'openid profile TypistApi' },
                 url: 'http://localhost:5001/connect/authorize'
             },
             token: {
-                url: `http://localhost:3000/connect/token`
+                url: `http://localhost:5001/connect/token`
             },
             userinfo: {
-                url: `http://localhost:3000/connect/token`
+                url: `http://localhost:5001/connect/token`
             },
-            idToken: true
+
 
         })
     ],
@@ -35,7 +35,7 @@ export const { handlers , signIn, singOut , auth } = NextAuth({
         },
         async session({session,token}){
             if(token){
-                session.user.username = token.username
+                session.user.username = token.username as string
             }
             return session
         }
