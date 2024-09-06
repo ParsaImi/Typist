@@ -1,8 +1,8 @@
-import NextAuth, { NextAuthOptions }  from "next-auth";
+import NextAuth from "next-auth";
 
 import DuendeIdentityServer6 from "next-auth/providers/duende-identity-server6";
 
-export const authOptions: NextAuthOptions = {
+export const { handlers , signIn, singOut , auth } = NextAuth({
     session: {
         strategy: 'jwt'
     },
@@ -10,9 +10,18 @@ export const authOptions: NextAuthOptions = {
         DuendeIdentityServer6({
             id: 'id-server',
             clientId: 'nextApp',
-            clientSecret: process.env.CLIENT_SECRET!,
-            issuer: process.env.IDENTITY_URL,
-            authorization: {params: {scope: 'openid profile TypistApi'}},
+            clientSecret: 'secret',
+            issuer: 'http:localhost:5001',
+            authorization: {
+                params: { scope: 'openid profile TypistApi' },
+                url: 'http://localhost:5001/connect/authorize'
+            },
+            token: {
+                url: `http://localhost:3000/connect/token`
+            },
+            userinfo: {
+                url: `http://localhost:3000/connect/token`
+            },
             idToken: true
 
         })
@@ -32,7 +41,4 @@ export const authOptions: NextAuthOptions = {
         }
     }
 
-}
-
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST};
+})

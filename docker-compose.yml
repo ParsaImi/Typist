@@ -37,7 +37,7 @@ services:
       - 5001:80
     depends_on:
       - postgres
-    #command: dotnet run
+    command: dotnet run
 
   gateway-svc:
     build: 
@@ -79,17 +79,3 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-  web-app:
-    build: 
-      context: .
-      dockerfile: web-app/Dockerfile
-    volumes:
-      - /var/lib/web/data
-    ports:
-      - 3000:3000
-    environment:
-      - NEXTAUTH_SECRET=cantimaginewahtisthis
-      - NEXTAUTH_URL=http://web-app
-      - IDENTITY_UTL=http://identity-svc
-      - NEXT_PUBLIC_WEBSOCKET_URL=ws://192.168.1.5:5227
-      - CLIENT_SECRET=secret
