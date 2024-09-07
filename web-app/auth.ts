@@ -14,13 +14,13 @@ export const { handlers , signIn, signOut , auth } = NextAuth({
             issuer: 'identity-svc',
             authorization: {
                 params: { scope: 'openid profile TypistApi' },
-                url: 'http://localhost:5001/connect/authorize'
+                url: `http://171.22.26.169:5001/connect/authorize`
             },
             token: {
-                url: `http://localhost:5001/connect/token`
+                url: `http://171.22.26.169:5001/connect/token`
             },
             userinfo: {
-                url: `http://localhost:5001/connect/token`
+                url: `http://171.22.26.169:5001/connect/token`
             },
 
 

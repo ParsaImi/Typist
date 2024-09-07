@@ -4,7 +4,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgrespw
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - /var/lib/postgresql/data
   mongodb:
@@ -79,3 +79,34 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+
+
+  web-app:
+    build:
+      context: .
+      dockerfile: web-app/Dockerfile
+    volumes:
+      - /var/lib/webnext/data
+    ports:
+      - 3000:3000
+    environment:
+      - NEXTAUTH_SECRET=cantimaginewahtisthis
+      - NEXTAUTH_URL=http://171.22.26.169:3000
+      - NEXTAUTH_URL_INTERNAL=http://web-app
+      - IDENTITY_URL=http://171.22.26.169:5001
+      - IDENTITY_URL_INTERNAL=http://identity-svc
+      - NEXT_PUBLIC_WEBSOCKET_URL=ws://171.22.26.169:5227
+      - NEXT_PUBLIC_WEBSOCKET_URL_INTERNAL=ws://websocket-svc
+      - CLIENT_SECRET=secret
+      - AUTH_TRUST_HOST=true
+  websocket-svc:
+    build:
+      context: .
+      dockerfile: chatapp-webserver/WebSocketServer/Dockerfile
+    ports:
+      - 5227:5227
+    environment:
+      - ASPNETCORE_URLS=http://+:5227
+      - ASPNETCORE_ENVIRONMENT=Development
+
+      
