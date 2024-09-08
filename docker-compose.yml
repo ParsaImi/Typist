@@ -1,3 +1,9 @@
+networks:
+  custom:
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+
 services:
   postgres:
     image: postgres
@@ -7,6 +13,8 @@ services:
       - 5432:5432
     volumes:
       - /var/lib/postgresql/data
+    networks:
+      custom:
   mongodb:
     image: mongo
     environment:
@@ -16,13 +24,18 @@ services:
       - 27017:27017
     volumes:
       - /var/lib/mongodb/data
+    networks:
+      custom:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      custom:
   identity-svc:
+    image: parsaimi/identity-svc:latest
     build: 
       context: .
       dockerfile: src/IdentityService/Dockerfile
@@ -38,8 +51,12 @@ services:
     depends_on:
       - postgres
     command: dotnet run
+    networks:
+      custom:
+        ipv4_address: 10.5.0.200
 
   gateway-svc:
+    image: parsaimi/gateway-svc:latest
     build: 
       context: .
       dockerfile: src/GatewayService/Dockerfile
@@ -48,8 +65,11 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - 6001:80
+    networks:
+      custom:
 
   search-svc:
+    image: parsaimi/search-svc:latest
     build: 
       context: .
       dockerfile: src/SearchService/Dockerfile
@@ -64,8 +84,11 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
+    networks:
+      custom:
 
   typistapi-svc:
+    image: parsaimi/typistapi-svc:latest
     build: 
       context: .
       dockerfile: src/TypistApi/Dockerfile
@@ -79,9 +102,11 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-
+    networks:
+      custom:
 
   web-app:
+    image: parsaimi/web-app:latest
     build:
       context: .
       dockerfile: web-app/Dockerfile
@@ -99,7 +124,10 @@ services:
       - NEXT_PUBLIC_WEBSOCKET_URL_INTERNAL=ws://websocket-svc
       - CLIENT_SECRET=secret
       - AUTH_TRUST_HOST=true
+    networks:
+      custom:
   websocket-svc:
+    image: parsaimi/websocket-svc:latest
     build:
       context: .
       dockerfile: chatapp-webserver/WebSocketServer/Dockerfile
@@ -109,4 +137,5 @@ services:
       - ASPNETCORE_URLS=http://+:5227
       - ASPNETCORE_ENVIRONMENT=Development
 
-      
+    networks:
+      custom:
