@@ -15,7 +15,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
         {
-            new ApiScope("TypistApi" , "All of the apis for Typist"),
+            new ApiScope("TypistApi" , "All of the APIs for Typist"),
         };
 
     public static IEnumerable<Client> Clients(IConfiguration config) =>
