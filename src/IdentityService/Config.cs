@@ -38,7 +38,7 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 AllowedScopes = {"openid", "profile" , "TypistApi"},
                 RequirePkce = false,
-                RedirectUris = {"http://171.22.26.169:3000/api/auth/callback/id-server"},
+                RedirectUris = {config["ClientApp"] + "/api/auth/callback/id-server"},
                 AllowOfflineAccess = true,
                 AccessTokenLifetime = 3600*24*30,
                 AlwaysIncludeUserClaimsInIdToken = true 

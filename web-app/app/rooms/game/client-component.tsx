@@ -25,7 +25,7 @@ export default function Home({
   setTimeout(() => {  
   }, 8000); // 3000 milliseconds = 3 seconds
   const [message, setMessage] = useState<string>('');
-  const { receivedMessages, sendMessage } = useWebSocket("ws://171.22.26.169:5227");
+  const { receivedMessages, sendMessage } = useWebSocket("wss://api.parsaimi.xyz");
   console.log(process.env.NEXT_PUBLIC_WEBSOCKET_URL , "yooo this is websocket ip dowg");
   console.log(process.env.NEXT_PUBLIC_WEBSOCKET_URL_INTERNAL , "internal one");
   console.log(process.env.CLIENT_SECRET , "this is secret");
