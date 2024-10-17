@@ -50,6 +50,23 @@ namespace WebSocketServer.Middleware
                                 Console.WriteLine(data.name);
                                 string winner_message = $"{{\"name\":\"{data.name}\",\"message\":\"{"thewinneris"}\"}}";
                                 await RouteJSONMessageAsync(winner_message);
+                                int endCountdown = 7;
+                                while (endCountdown > 0) // till the match ends
+                                {
+                                    string timeleft_message = $"{{\"name\":\"timeleft\",\"message\":\"{endCountdown}\"}}";
+                                    await RouteJSONMessageAsync(timeleft_message);
+                                    Thread.Sleep(1000);
+                                    endCountdown--;
+                                }
+                                int startCountdown = 6;
+                                while (startCountdown > 0) // till the match starts
+                                {
+                                    string startcount_message = $"{{\"name\":\"startcount\",\"message\":\"{startCountdown}\"}}";
+                                    await RouteJSONMessageAsync(startcount_message);
+                                    Thread.Sleep(1000);
+                                    startCountdown--;
+                                }
+
                             }else{
                                 string word_message = $"{{\"name\":\"{data.name}\",\"message\":\"{data.message}\"}}";
                                 await RouteJSONMessageAsync(word_message);

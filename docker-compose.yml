@@ -32,7 +32,6 @@ services:
     volumes:
       - /var/lib/postgresql/data
   identity-svc:
-    image: parsaimi/identity-svc:latest
     build: 
       context: .
       dockerfile: src/IdentityService/Dockerfile
@@ -52,7 +51,6 @@ services:
       - postgres
 
   web-app:
-    image: parsaimi/web-app:latest
     build:
       context: .
       dockerfile: web-app/Dockerfile
@@ -72,7 +70,6 @@ services:
       - VIRTUAL_HOST=app.parsaimi.xyz
       - LETSENCRYPT_HOST=app.parsaimi.xyz
   websocket-svc:
-    image: parsaimi/websocket-svc:latest
     build:
       context: .
       dockerfile: chatapp-webserver/WebSocketServer/Dockerfile
@@ -83,6 +80,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Docker
       - VIRTUAL_HOST=api.parsaimi.xyz
       - LETSENCRYPT_HOST=api.parsaimi.xyz
+  
+
 
 volumes:
   pgdata:

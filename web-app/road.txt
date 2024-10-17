@@ -1,0 +1,5 @@
+to yo ,
+gonna send the timer from server to client
+with socket message
+if a user joined the game ( normal is the type situeeei)
+till the server send time with a socket message;

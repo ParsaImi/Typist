@@ -5,7 +5,7 @@ import { useWebSocket } from './WebSocketContext';
 import { GetServerSideProps } from 'next';
 import { User } from 'next-auth';
 import { Card } from "flowbite-react";
-
+import Countdown from './countdown';
 
   
 interface MessageData {
@@ -24,6 +24,13 @@ export default function Home({
 }) {
   setTimeout(() => {  
   }, 8000); // 3000 milliseconds = 3 seconds
+  const [isCountdownActive, setIsCountdownActive] = useState(true);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const handleCountdownFinish = () => {
+    setIsCountdownActive(false);
+    setIsGameStarted(true);
+  };
+
   const [message, setMessage] = useState<string>('');
   const { receivedMessages, sendMessage } = useWebSocket("wss://api.parsaimi.xyz");
   console.log(process.env.NEXT_PUBLIC_WEBSOCKET_URL , "yooo this is websocket ip dowg");
@@ -140,6 +147,12 @@ export default function Home({
         return (
           <p className='text-2xl mt-5 col text-yellow-500'>the winner is {winner}</p>
         );
+      
+      }
+      if(message.includes("startCounter")){
+        const time = message.split(",")[0].split(":")[0]
+
+        return( <p className='text-2xl mt-5 col text-blue-500'>game start in {time}</p>);
       }
       
       // const data = JSON.parse(message); // Parse JSON string to JavaScript object
@@ -155,19 +168,39 @@ export default function Home({
     return null;
   };
 
+  const matchStarting = (message : string) => {
+    if(message.includes("startCounter")){
+      const time = message.split(",")[0].split(":")[0]
+      if (time == "1") {
+        return true
+      }
+      else{
+        return false
+      }
+      
+    }
+  }
+
   return (
-    <div className='flex flex-col items-center'>
-      <p></p>
-    <div className='mb-10 mt-2'>
-        <h1 className="text-2xl mb-4">Type the following sentence: </h1>
+    <div>
+      {isCountdownActive && <Countdown duration={10} onFinish={handleCountdownFinish} />}
+      {isGameStarted && (
+        
+      <div className='flex flex-col items-center'>
+        <p></p>
+      <div className='mb-10 mt-2'>
+          <h1 className="text-2xl mb-4">Type the following sentence: </h1>
+      </div>
+      <div className="flex flex-col items-center justify-center px-9 py-20 bg-gray-500 rounded-xl">
+        <p className="text-3xl mb-4">{renderSentence()}</p>
+      </div>
+      <div className="text-xl mt-4">Press keys to start typing...</div>
+      {receivedMessages.map((message, index) => 
+          renderMessage(message , index)
+  )}
     </div>
-    <div className="flex flex-col items-center justify-center px-9 py-20 bg-gray-500 rounded-xl">
-      <p className="text-3xl mb-4">{renderSentence()}</p>
-    </div>
-    <div className="text-xl mt-4">Press keys to start typing...</div>
-    {receivedMessages.map((message, index) => 
-        renderMessage(message , index)
-)}
+
+      )}
     </div>
 
   );
